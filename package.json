@@ -1,0 +1,36 @@
+{
+  "name": "snark-proto",
+  "version": "0.0.0",
+  "description": "Prototype snark transpiler with extremely naive implementation",
+  "main": "src/index.js",
+  "bin": {
+    "snark-proto": "src/cli.js"
+  },
+  "scripts": {
+    "build": "node src/genParser.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hyeonupark/snark-proto.git"
+  },
+  "keywords": [
+    "snark"
+  ],
+  "author": "HyeonuPark",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hyeonupark/snark-proto/issues"
+  },
+  "homepage": "https://github.com/hyeonupark/snark-proto#readme",
+  "dependencies": {
+    "babel-core": "^6.17.0",
+    "babel-preset-es2015": "^6.16.0",
+    "babel-preset-stage-0": "^6.16.0",
+    "minimist": "^1.2.0"
+  },
+  "devDependencies": {
+    "co": "^4.6.0",
+    "mz": "^2.4.0",
+    "pegjs": "^0.10.0"
+  }
+}
