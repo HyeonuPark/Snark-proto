@@ -3,6 +3,8 @@ const fs = require('mz/fs')
 const co = require('co')
 const peg = require('pegjs')
 
+const bin = Path.resolve(__dirname, '../bin')
+
 const toPeg = keywords => `
 // Keywords
 // Automatically generated from keywords.txt
@@ -12,7 +14,7 @@ ReservedKeywords
 
 ${keywords.map(key => `
 K_${key}
-= '${key}' PD { return '${key}' }
+= '${key}' !IdentifierPart PD { return '${key}' }
 `).join('').replace(/\n\n\n/g, '\n')}
 `
 
@@ -27,11 +29,13 @@ co(function* () {
 
   const pegsrc = `${parser}\n${keywords}\n${unicode}`
 
-  const result = peg.generate(pegsrc, {output: 'source'})
+  yield fs.writeFile(Path.resolve(bin, 'full.pegjs'), pegsrc, 'utf8')
 
-  yield fs.writeFile(Path.resolve(__dirname, 'parser.js'), result, 'utf8')
+  const result = peg.generate(pegsrc, {output: 'source', format: 'commonjs'})
+
+  yield fs.writeFile(Path.resolve(bin, 'parser.js'), result, 'utf8')
 
   console.log('Generated parser.js')
 }).catch(err => {
-  console.error(err.stack)
+  console.error(err.stack, err)
 })
