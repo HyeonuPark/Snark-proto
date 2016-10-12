@@ -8,8 +8,8 @@
   },
   "scripts": {
     "build": "node src/genParser.js",
-    "print": "node test/print.js",
-    "bp": "npm run build && npm run print",
+    "show": "node test/show.js",
+    "bs": "npm run build && npm run show",
     "test": "npm run build && mocha test/test.js"
   },
   "repository": {

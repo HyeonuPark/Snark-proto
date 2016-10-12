@@ -24,7 +24,7 @@ $ npm install
 $ npm run build
 $
 $ npm test                  # execute all tests with mochajs
-$ npm run print <test-name> # compile matching test code and print readable output
+$ npm run show <test-name> # compile matching test code and show readable output
 ```
 
 ## License

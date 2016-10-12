@@ -538,18 +538,21 @@ NumberLiteral
 DecimalNumber
 = left:Integer '.' right:Integer exponent:ExponentPart? {
   return Node('NumericLiteral', {
-    value: parseFloat(`${left}.${right}${exponent || ''}`)
+    value: Number(`${left}.${right}${exponent || ''}`)
   })
 }
 / num:Integer exponent:ExponentPart? {
   return Node('NumericLiteral', {
-    value: parseInt(`${num}${exponent || ''}`, 10)
+    value: Number(`${num}${exponent || ''}`)
   })
 }
 
 ExponentPart
 = [Ee] num:Integer {
-  return `e${num}`
+  return `E${num}`
+}
+/ [Ee] '-' num:Integer {
+  return `E-${num}`
 }
 
 Integer
