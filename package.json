@@ -32,7 +32,6 @@
     "minimist": "^1.2.0"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
     "co": "^4.6.0",
     "mocha": "^3.1.2",
     "mz": "^2.4.0",

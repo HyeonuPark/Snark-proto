@@ -1,4 +1,3 @@
-const {expect} = require('chai')
 const fs = require('mz/fs')
 const co = require('co')
 const Path = require('path')
@@ -11,6 +10,17 @@ const output = testName => Path.resolve(fixturePath, testName, 'output.js')
 
 const fixtures = fs.readdirSync(fixturePath)
 
+const notMatching = (dotSnark, dotJs) => `Not matching
+
+// input.snark
+
+${dotSnark}
+
+// output.js
+
+${dotJs}
+`
+
 describe('.fixture', () => {
   for (let testName of fixtures) {
     it(testName, () => Promise.all([
@@ -20,20 +30,31 @@ describe('.fixture', () => {
       const inputResult = snark.transform(inputSrc, {
         nobabel: true,
         noruntime: true,
-        babelrc: false,
         compact: true,
         comments: false,
         ast: false
       }).code
       const outputResult = babel.transform(outputSrc, {
-        babelrc: false,
         compact: true,
         comments: false,
         ast: false
       }).code
 
       if (inputResult !== outputResult) {
-        throw new Error('Not matching')
+        const inputLongResult = snark.transform(inputSrc, {
+          nobabel: true,
+          noruntime: true,
+          compact: false,
+          comments: false,
+          ast: false
+        }).code
+        const outputLongResult = babel.transform(outputSrc, {
+          compact: false,
+          comments: false,
+          ast: false
+        }).code
+
+        throw new Error(notMatching(inputLongResult, outputLongResult))
       }
     }))
   }

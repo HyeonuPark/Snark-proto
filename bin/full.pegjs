@@ -59,11 +59,11 @@
 
   function dedent (lines) {
     const indent = lines
-      .map(l => l.line)
-      .map(l => l.length - l.replace(/^\s*/, '').length)
-      .reduce((left, right) => Math.min(left, right))
+      .filter(l => l.line.length > 0)
+      .map(l => l.padding.length)
+      .reduce((left, right) => left === 0 ? right : Math.min(left, right), 0)
 
-    return lines.map(l => l.line.slice(indent) + l.end).join('')
+    return lines.map(l => l.padding.slice(indent) + l.line + l.end).join('')
   }
 }
 
@@ -573,7 +573,7 @@ BinaryNumber
 }
 
 StringLiteral
-= "'''" LineBreakSequence content:StringLine* [\s]* "'''" {
+= "'''" PD LineBreakSequence content:StringLine* PD "'''" {
   return Node('StringLiteral', {value: dedent(content)})
 }
 / "'" content:StringCharacter* "'" {
@@ -581,8 +581,8 @@ StringLiteral
 }
 
 StringLine
-= content:StringCharacter* end:LineBreakSequence {
-  return {line: content.join(''), end}
+= padding:$PD content:StringCharacter* end:LineBreakSequence {
+  return {padding, line: content.join(''), end}
 }
 
 StringCharacter
@@ -591,9 +591,6 @@ StringCharacter
 }
 / '\\' escape:EscapeSequence {
   return escape
-}
-/ LineBreakSequence [\s]* {
-  return ' '
 }
 
 // TODO: TemplateLiteral
@@ -605,6 +602,9 @@ EscapeSequence
   = CharacterEscapeSequence
   / HexEscapeSequence
   / UnicodeEscapeSequence
+  / LineBreakSequence PD {
+    return ''
+  }
 
 CharacterEscapeSequence
   = SingleEscapeCharacter

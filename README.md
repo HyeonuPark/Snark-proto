@@ -3,13 +3,28 @@ Snark-proto
 
 Prototype snark transpiler with extremely naive implementation.
 
-Not working yet!
+## Limitation
+
+Snark-proto is not a full-featured Snark compiler implementation, and it can only handle a subset of well-formed Snark codes. This repository is also an example of the minimal-yet-usable real code compiler.
 
 ## Usage
 
 ```
-$ npm install -g snark-proto
-$ snark-proto <source>.snark [-o <source>.js] [--nobabel]
+$ npm install --global snark-proto
+$
+$ snark-proto source.snark [-o result.js]
+```
+
+## Development
+
+```
+$ git clone https://github.com/HyeonuPark/snark-proto.git
+$ cd snark-proto
+$ npm install
+$ npm run build
+$
+$ npm test                  # execute all tests with mochajs
+$ npm run print <test-name> # compile matching test code and print readable output
 ```
 
 ## License
