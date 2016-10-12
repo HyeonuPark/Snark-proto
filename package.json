@@ -1,6 +1,6 @@
 {
   "name": "snark-proto",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Prototype snark transpiler with extremely naive implementation",
   "main": "src/index.js",
   "bin": {
