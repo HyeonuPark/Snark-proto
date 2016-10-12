@@ -1,1 +1,3 @@
-fn filterFoo {foo} => {foo}
+fn [a, b, c] => a + b + c
+fn #filterFoo {foo} => {foo}
+#(#0 + #1)

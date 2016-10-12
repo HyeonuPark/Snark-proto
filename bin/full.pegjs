@@ -703,7 +703,7 @@ FunctionStatement
 }
 
 BasicFunctionClause
-= params:FunctionParameter PD '=>' PD result:Expression {
+=K_fn params:FunctionParameter PD '=>' PD result:Expression {
   return Node('FunctionExpression', {
     id: null,
     params,
@@ -723,10 +723,10 @@ NamedFunctionClause
     params,
     generator: false,
     async: false,
-    body: [SubNode('BlockStatement', {
+    body: SubNode('BlockStatement', {
       body: [SubNode('ReturnStatement', {argument: result})],
       directives: []
-    })]
+    })
   })
 }
 
@@ -767,7 +767,7 @@ PublicIdentifier
 }
 
 IdentifierName
-= IdentifierStart IdentifierPart* IdentifierEnd {
+= IdentifierStart (IdentifierPart &IdentifierPart)* IdentifierEnd {
   return text()
 }
 / !'_' IdentifierStart {
@@ -864,7 +864,7 @@ ObjectPattern
 
 PropertyPattern
 = key:PublicIdentifier {
-  return Node('AssignmentProperty', {
+  return Node('ObjectProperty', {
     key,
     value: key,
     computed: false,
@@ -873,7 +873,7 @@ PropertyPattern
   })
 }
 / key:PublicIdentifier PD K_as value:AssignmentPattern {
-  return Node('AssignmentProperty', {
+  return Node('ObjectProperty', {
     key,
     value,
     computed: false,
@@ -882,7 +882,7 @@ PropertyPattern
   })
 }
 / key:PrivateIdentifier {
-  return Node('AssignmentProperty', {
+  return Node('ObjectProperty', {
     key: key.innerExpression,
     value: key,
     computed: true,
@@ -891,7 +891,7 @@ PropertyPattern
   })
 }
 / key:PrivateIdentifier PD K_as value:AssignmentPattern {
-  return Node('AssignmentProperty', {
+  return Node('ObjectProperty', {
     key: key.innerExpression,
     value,
     computed: true,

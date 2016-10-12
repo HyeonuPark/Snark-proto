@@ -1,14 +1,17 @@
 const {expect} = require('chai')
 const fs = require('mz/fs')
+const co = require('co')
 const Path = require('path')
 const snark = require('../lib/index')
 const babel = require('babel-core')
 
-const fixturePath = testName => Path.resolve(__dirname, '.fixture')
-const input = testName => Path.resolve(fixture, testName, 'input.snark')
-const output = testName => Path.resolve(fixture, testName, 'output.js')
+const fixturePath = Path.resolve(__dirname, '.fixture')
+const input = testName => Path.resolve(fixturePath, testName, 'input.snark')
+const output = testName => Path.resolve(fixturePath, testName, 'output.js')
 
-fs.readdir(fixturePath).then(fixtures => describe('.fixture', () => {
+const fixtures = fs.readdirSync(fixturePath)
+
+describe('.fixture', () => {
   for (let testName of fixtures) {
     it(testName, () => Promise.all([
       fs.readFile(input(testName), 'utf8'),
@@ -34,4 +37,4 @@ fs.readdir(fixturePath).then(fixtures => describe('.fixture', () => {
       }
     }))
   }
-}))
+})

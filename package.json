@@ -9,7 +9,8 @@
   "scripts": {
     "build": "node src/genParser.js",
     "print": "node test/print.js",
-    "bp": "npm run build && npm run print"
+    "bp": "npm run build && npm run print",
+    "test": "npm run build && mocha test/test.js"
   },
   "repository": {
     "type": "git",
